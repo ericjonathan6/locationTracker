@@ -8,31 +8,10 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button} from 'react-native';
-import BackgroundJob from 'react-native-background-job';
-import AsyncStorage from '@react-native-community/async-storage';
+import ToastExample from './modules/ToastExample';
+import LocationTracker from './modules/LocationTracker';
 
-const backgroundJob = {
- jobKey: "myJob",
- job: () => {
-    console.log("Running in background")
-    navigator.geolocation.getCurrentPosition(
-      async(position) => {
-        console.log(
-          position.coords.latitude,
-          position.coords.longitude,
-        );
-        await AsyncStorage.setItem('@MyApp:position', JSON.stringify(position));
-      },
-      async(error) => await AsyncStorage.setItem('@MyApp:error', JSON.stringify(error.message)),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );  
-  }
-};
-
-BackgroundJob.register(backgroundJob);
-
-type Props = {};
-export default class App extends Component<Props> {
+export default class App extends Component {
   constructor(props) {
     super(props);
 
@@ -45,31 +24,12 @@ export default class App extends Component<Props> {
   }
   
   componentDidMount() {
-    BackgroundJob.schedule({
-      jobKey: "myJob",
-      period: 4000,
-      exact: true,
-      allowWhileIdle: true,
-      timeout: 3000,
-      allowExecutionInForeground: true,
-    });
-    this.interval = setInterval(() => this.fetchLocation(), 2000);
-  }
+    ToastExample.show('Awesome', ToastExample.SHORT);
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
+    LocationTracker.read((msg) => {
+      console.log('wololo' + msg);
+    })
 
-  async fetchLocation() {
-    const position = await AsyncStorage.getItem('@MyApp:position');
-    if (position) {
-      const result = JSON.parse(position);
-      console.log("FETCHING");
-      this.setState({
-        latitude: result.coords.latitude,
-        longitude:  result.coords.longitude,
-      });
-    }
   }
 
   render() {
