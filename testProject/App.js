@@ -19,8 +19,6 @@ export default class App extends Component {
       latitude: null,
       longitude: null
     };
-
-    this.fetchLocation = this.fetchLocation.bind(this);
   }
   
   componentDidMount() {

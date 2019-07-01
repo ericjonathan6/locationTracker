@@ -16,6 +16,6 @@ public class LocationManager {
     }
 
     public static String getLocation() {
-
+        return "";
     }
 }
