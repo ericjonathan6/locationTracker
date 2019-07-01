@@ -14,8 +14,7 @@ import java.util.List;
 public class LocationTrackerPackage implements ReactPackage {
     private Activity mActivity = null;
 
-    public LocationTrackerPackage(Activity mActivity) {
-        this.mActivity = mActivity;
+    public LocationTrackerPackage() {
     }
 
     @Override
